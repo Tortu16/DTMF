@@ -62,21 +62,23 @@ n=[0:1/Fs:C*T];
 %Calcula los valores de la señal discreta
 %sinn=sin(2*pi*F*n);uahhñ
 
-o = mod(n*(2*697*180)+90,180)
+o = mod(n*(2*F*180)+90,180);
+o2 = mod(n*(2*F*180)+90,360);
+quadrant = 2*sign (o-o2)+1;
 part1=c2+c3*o+c4*(realpow(o,2))+c5*(realpow(o,3))+(realpow(o,4));
-sinn = ( c1*o.*(180-o).*(part1) )/524880000000;
+sinn = quadrant.*( c1*o.*(180-o).*(part1) )/524880000000;
 
 
 %Funciones de graficacion
 
 
 %Grafica la señal analogica
-labelF= strcat("-b;F ="," ",num2str(F), ";");
-plot(t,sin(2*pi*F*t),labelF)
+labelF= strcat("-b;Fs = 8000 Hz", ";");
+plot(t,cos(2*pi*F*t),labelF)
 %Congela el grafico para agregar la señal discreta
 hold on
 %Grafica la señal alias
-labelFa= strcat("-r;Falias ="," ",num2str(Fa), ";");
+labelFa= strcat("-r;Fcos ="," ",num2str(Fa)," Hz", ";");
 plot(t,cos(2*pi*Fa*t),labelFa)
 % Grafica la señal discreta
 labeln= strcat("ok;Fs ="," ",num2str(Fs), ";");
