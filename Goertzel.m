@@ -25,6 +25,6 @@ endfor
 
 Xk = w1^2 - 2*cos(2*pi*fk/fs)*w1*w2 + w2^2;
 
-GoertzelCoeff = Xk
+GoertzelCoeff = Xk;
 
 endfunction
