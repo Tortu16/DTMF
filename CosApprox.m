@@ -13,11 +13,11 @@ retCos = [0];
 retCos(end+length(n)-1) = 0;
 
 % Coeficientes del polinomio
-c1 = 26-15*sqrt(3);
-c2 = 810000*(1657+930*sqrt(3));
-c3 = 324000*(19+15*sqrt(3));
-c4 = -1800*(1+15*sqrt(3));
-c5 = -360;
+c1 = 26-15*sqrt(3)
+c2 = 810000*(1657+930*sqrt(3))
+c3 = 324000*(19+15*sqrt(3))
+c4 = -1800*(1+15*sqrt(3))
+c5 = -360
 
 % Preprocesado
 
