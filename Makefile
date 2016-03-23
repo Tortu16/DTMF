@@ -1,5 +1,5 @@
-jack: Sine.cpp
-	g++ -O3 -o jack Sine.cpp `pkg-config --cflags --libs jack` -lm
+jack: DTMF.cpp tonedetection.cpp
+	g++ -O3 -o jack DTMF.cpp `pkg-config --cflags --libs jack` -lm -fpermissive
 
 
 clean: 
