@@ -14,9 +14,10 @@
 #include <unistd.h>
 #endif
 #include <jack/jack.h>
-#include "tonedetection.h"
 #include <iomanip>
 #include <iostream>
+
+#include "Goertzel.h"
 
 jack_port_t **input_ports;
 jack_port_t *output_port1, *output_port2;
@@ -42,54 +43,6 @@ typedef struct
 }
 paTestData;
 
-float toneDetectionFunction (float *xn, int fk, float fs){
-    float wk_ = 0.0;
-    float w1_ = 0.0;
-    float w2_ = 0.0;
-    float c1_ = 0.0;
-    float Xk_ = 0.0; 
-
-    switch (fk){
-    case 697:
-        c1_ = 1.9901;
-        break;
-    case 770:
-        c1_ = 1.9880;
-        break;
-    case 852:
-        c1_ = 1.9853;
-        break;
-    case 941:
-        c1_ = 1.9821;
-        break;
-    case 1209:
-        c1_ = 1.9704;
-        break;
-    case 1336:
-        c1_ = 1.9639;
-        break;
-    case 1477:
-        c1_ = 1.9559;
-        break;
-    case 1633:
-        c1_ = 1.9461;
-        break;
-    default:
-        c1_ = 0;
-    }
-
-    for (int i=0; i< 512; i++){
-        w2_ = w1_;
-        w1_ = wk_;
-        wk_ = xn[i] + c1_*w1_-w2_;
-    }
-
-    Xk_ = w1_*w1_ + w2_*w2_ - c1_*w1_*w2_;
-
-    return Xk_;
-
-}
-
 static void signal_handler ( int sig )
 {
     jack_client_close ( client );
@@ -110,6 +63,8 @@ process ( jack_nframes_t nframes, void *arg )
 {
     int i;
     jack_default_audio_sample_t *in, *out;
+    float GCoeffArray[8] = {0,0,0,0,0,0,0,0};
+    float ToneFreq [8] = {697, 770, 852, 941, 1209, 1336, 1477, 1633};
 
 
 //printf ("# of frames: %d\n", nframes);
@@ -120,15 +75,20 @@ process ( jack_nframes_t nframes, void *arg )
       in = jack_port_get_buffer ( input_ports[i], nframes );
       out = jack_port_get_buffer ( output_ports[i], nframes );
 
-	for( i=0; i<nframes; i++ )
+      // Aqui se analiza el audio de entrada
+
+      for (i = 0; i < 8; i++ )
+      {
+          GCoeffArray[i] = toneDetectionFunction (in,ToneFreq [i],44100);
+          std::cout<<"\r"<<GCoeffArray[0]<<" "<<GCoeffArray[1]<<std::flush;
+      }
+
+      for( i=0; i<nframes; i++ )
 	{
 
                 in[i] = in[i];	//aqui se modifica el buffer de entrada
 
 	}
-
-        std::cout<<"\r"<<toneDetectionFunction (in,697,44100)<<std::flush;
-
   
         memcpy ( out, in, nframes * sizeof ( jack_default_audio_sample_t ) ); // se copia el buffer de entrada modificado a la salida
     }
