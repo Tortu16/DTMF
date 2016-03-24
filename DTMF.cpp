@@ -18,6 +18,9 @@
 #include <iostream>
 
 #include "Goertzel.h"
+#include "interpretaciontono.h"
+
+using namespace std;
 
 jack_port_t **input_ports;
 jack_port_t *output_port1, *output_port2;
@@ -66,6 +69,11 @@ process ( jack_nframes_t nframes, void *arg )
     float GCoeffArray[8] = {0,0,0,0,0,0,0,0};
     float ToneFreq [8] = {697, 770, 852, 941, 1209, 1336, 1477, 1633};
 
+    float toneCoeff [2] = {0,0};
+    int index [2] = {0,0};
+
+    bool Umbral_, Twist_, Offset_, EnergiaTotal_ = false;
+
 
 //printf ("# of frames: %d\n", nframes);
 
@@ -80,8 +88,22 @@ process ( jack_nframes_t nframes, void *arg )
       for (i = 0; i < 8; i++ )
       {
           GCoeffArray[i] = toneDetectionFunction (in,ToneFreq [i],44100);
-          std::cout<<"\r"<<GCoeffArray[0]<<" "<<GCoeffArray[1]<<std::flush;
       }
+      
+      
+      large (GCoeffArray, toneCoeff, index);
+      Umbral_ = Umbral(toneCoeff,10);
+      Twist_ = Twist (index);
+      Offset_ = Offset (toneCoeff,index,7,7);
+      EnergiaTotal_ = EnergiaTotal (GCoeffArray,8000,8000,0.125);
+
+      cout<<"\r"<<Umbral_<<" "<<Offset_<<" "<<EnergiaTotal_<<" "<< GCoeffArray[0] <<" "<< GCoeffArray[1] <<" "<< GCoeffArray[2] <<" "<< GCoeffArray[3] <<" "<< GCoeffArray[4] <<" "<< GCoeffArray[5] <<" "<< GCoeffArray[6] <<" "<< GCoeffArray[7] <<" "<<flush;
+//if (Umbral(toneCoeff,10) && Offset (toneCoeff,index,0.1,0.1) && EnergiaTotal (GCoeffArray,400,400,0.125)) cout<<"\r"<<Decoder(index)<<"	"<<toneCoeff[0]<<" "<<toneCoeff[1]<<flush;
+      
+//Umbral(toneCoeff,10) && Twist (index) && Offset (toneCoeff,index,0.1,0.1) && EnergiaTotal (GCoeffArray,400,400,0.125)
+      //cout<<"\r"<<toneCoeff[0]<<" "<<toneCoeff[1]<<flush;
+
+      // Aqui se termina el analisis de audio de entrada
 
       for( i=0; i<nframes; i++ )
 	{

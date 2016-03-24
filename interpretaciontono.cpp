@@ -104,17 +104,14 @@ bool EnergiaTotal (float* in, float cb, float ca, float cs){
     for (int i = 0; i < 8; i++){
         suma = suma + in[i];        // Calcula la suma de todas las energias: La energia total.
     }
-    cout << "suma" << suma <<endl;
     suma = suma * cs;               // Pondera la energia total con el coeficiente indicado.
     for (int i = 0; i < 4; i++){
         if ( cb * in[i] < suma) {
-            cout << "cb" << cb*in[i] <<endl;
             return false;
         }
     }
     for (int i = 4; i < 8; i++){
         if ( ca * in [i] < suma) {
-            cout << "ca" << in[i] <<endl;
             return false;
         }
     }
