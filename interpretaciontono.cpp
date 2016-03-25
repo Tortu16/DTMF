@@ -1,5 +1,6 @@
 #include "interpretaciontono.h"
 #include <cmath>
+#include <iostream>
 
 
 /*
@@ -45,7 +46,7 @@ for (int i = 0; i < 4; i++)
   }
 for (int i = 4; i < 8; i++)
   {
-    if (in[i] > array[0])
+    if (in[i] > array[1])
     {
         array[1] = in[i];
         index[1] = i;
@@ -78,10 +79,10 @@ bool Umbral (float* in, float umbral){
  *
 */
 
-bool Twist (int* in)
+bool Twist (float* in)
 {
-    if (in[0] > in [1]) return false;
-    else return true;
+    if (in[0] > in [1]) return true;
+    else return false;
 }
 
 /*
@@ -96,14 +97,11 @@ bool Twist (int* in)
 
 bool Offset (float* in, int* index, float umbralbajo, float umbralalto){
     for (int i = 0; i < 4; i++){
-        if (i != index[0]){
-            if (in[index[0]] - in[i] < umbralbajo) return false;
-        }
+        if (i != index[0] && in[i] > in[index[0]]*umbralbajo) return false;
+
     }
     for (int i = 4; i < 8; i++){
-        if (i != index[1]){
-            if (in[index[1]] - in[i] < umbralalto) return false;
-        }
+        if (i != index[1] && in[i] > in[index[1]]*umbralalto) return false;
     }
     return true;
 }

@@ -38,7 +38,7 @@ bool Umbral (float* in, float umbral);
  *
 */
 
-bool Twist (int* in);
+bool Twist (float* in);
 
 /*
  * Prueba de Offset:
