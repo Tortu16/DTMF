@@ -77,11 +77,16 @@ bool Umbral (float* in, float umbral){
  *  una mayor pérdida en el cable. Se puede compensar esta diferencia en la pérdida al
  * transmitir.
  *
+ * La especificación Bellcore indica un Twist aceptable de -8 a 4 dB. Se toma como referencia
+ * la potencia de la frecuencia baja y se calcula el dB de la alta: 0.15 para -8 y 2.5 para 4 dB.
+ *
 */
 
 bool Twist (float* in)
 {
-    if (in[0] > in [1]) return true;
+    float ratio = 0;
+    ratio = in[1]/in[0];
+    if (ratio > 0.15 && ration < 2.5) return true;
     else return false;
 }
 
