@@ -86,7 +86,7 @@ bool Twist (float* in)
 {
     float ratio = 0;
     ratio = in[1]/in[0];
-    if (ratio > 0.15 && ration < 2.5) return true;
+    if (ratio > 0.15 && ratio < 2.5) return true;
     else return false;
 }
 
