@@ -91,14 +91,14 @@ process ( jack_nframes_t nframes, void *arg )
       }
       
       
-      large (GCoeffArray, toneCoeff, index);
+      large2 (GCoeffArray, toneCoeff, index);
       Umbral_ = Umbral(toneCoeff,10);
       Twist_ = Twist (index);
       Offset_ = Offset (toneCoeff,index,7,7);
       EnergiaTotal_ = EnergiaTotal (GCoeffArray,8000,8000,0.125);
 
-      cout<<"\r"<<Umbral_<<" "<<Offset_<<" "<<EnergiaTotal_<<" "<< GCoeffArray[0] <<" "<< GCoeffArray[1] <<" "<< GCoeffArray[2] <<" "<< GCoeffArray[3] <<" "<< GCoeffArray[4] <<" "<< GCoeffArray[5] <<" "<< GCoeffArray[6] <<" "<< GCoeffArray[7] <<" "<<flush;
-//if (Umbral(toneCoeff,10) && Offset (toneCoeff,index,0.1,0.1) && EnergiaTotal (GCoeffArray,400,400,0.125)) cout<<"\r"<<Decoder(index)<<"	"<<toneCoeff[0]<<" "<<toneCoeff[1]<<flush;
+      cout<<"\r"<<Umbral_<<" "<<Twist_<<" "<<Offset_<<" "<<toneCoeff[0] <<" "<<toneCoeff[1]<<" "<<EnergiaTotal_<<" "<< GCoeffArray[0] <<" "<< GCoeffArray[1] <<" "<< GCoeffArray[2] <<" "<< GCoeffArray[3] <<" "<< GCoeffArray[4] <<" "<< GCoeffArray[5] <<" "<< GCoeffArray[6] <<" "<< GCoeffArray[7] <<" "<<flush;
+     //if (Umbral(toneCoeff,20) && Offset (toneCoeff,index,40,40) && EnergiaTotal (GCoeffArray,40000,40000,0.125)) cout<<"\r"<<Decoder(index)<<"	"<<toneCoeff[0]<<" "<<toneCoeff[1]<<flush;
       
 //Umbral(toneCoeff,10) && Twist (index) && Offset (toneCoeff,index,0.1,0.1) && EnergiaTotal (GCoeffArray,400,400,0.125)
       //cout<<"\r"<<toneCoeff[0]<<" "<<toneCoeff[1]<<flush;

@@ -3,7 +3,7 @@
 
 
 /*
- * Encuentra los dos valores de mayor magnitud de un arreglo
+ * Encuentra los dos valores de mayor magnitud en un array
  */
 
 
@@ -20,6 +20,32 @@ for (int i = 0; i < 8; i++)
         index[0] = i;
     }
     else if (in[i] > array[1])
+    {
+        array[1] = in[i];
+        index[1] = i;
+    }
+  }
+}
+
+/*
+ * Encuentra los dos valores de mayor magnitud en las frecuencias bajas y en las altas por separado
+ */
+
+
+void large2 (float* in, float* array, int* index)
+{
+
+for (int i = 0; i < 4; i++)
+  {
+    if (in[i] > array[0])
+    {
+        array[0] = in[i];
+        index[0] = i;
+    }
+  }
+for (int i = 4; i < 8; i++)
+  {
+    if (in[i] > array[0])
     {
         array[1] = in[i];
         index[1] = i;
@@ -71,12 +97,12 @@ bool Twist (int* in)
 bool Offset (float* in, int* index, float umbralbajo, float umbralalto){
     for (int i = 0; i < 4; i++){
         if (i != index[0]){
-            if (in[i] > umbralbajo) return false;
+            if (in[index[0]] - in[i] < umbralbajo) return false;
         }
     }
     for (int i = 4; i < 8; i++){
         if (i != index[1]){
-            if (in[i] > umbralalto) return false;
+            if (in[index[1]] - in[i] < umbralalto) return false;
         }
     }
     return true;

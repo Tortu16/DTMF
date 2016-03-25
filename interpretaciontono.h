@@ -10,6 +10,13 @@
 void large (float* in, float* array, int* index); 
 
 /*
+ * Encuentra los dos valores de mayor magnitud en las frecuencias bajas y en las altas por separado
+ */
+
+
+void large2 (float* in, float* array, int* index);
+
+/*
  *
  * Prueba de magnitud:
  *
