@@ -68,9 +68,14 @@ process ( jack_nframes_t nframes, void *arg )
     jack_default_audio_sample_t *in, *out;
     float GCoeffArray[8] = {0,0,0,0,0,0,0,0};
     float ToneFreq [8] = {697, 770, 852, 941, 1209, 1336, 1477, 1633};
+   
+    float GCoeff2Har[8] = {0,0,0,0,0,0,0,0};
+    float ToneFreq2Har [8] = {1394, 1540, 1704, 1882, 2418, 2672, 2954, 3266};
 
     float toneCoeff [2] = {0,0};
     int index [2] = {0,0};
+
+    bool ValidTone_ = false;
 
     bool Umbral_, Twist_, Offset_, EnergiaTotal_ = false;
 
@@ -92,16 +97,23 @@ process ( jack_nframes_t nframes, void *arg )
       
       
       large2 (GCoeffArray, toneCoeff, index);
-      //Umbral_ = Umbral(toneCoeff,10);
-      //Twist_ = Twist (toneCoeff); // El tono de mayor magnitud es por lo general el de frecuencias bajas.
-      //Offset_ = Offset (GCoeffArray,index,0.7,0.7);
-      //EnergiaTotal_ = EnergiaTotal (GCoeffArray,8000,8000,0.125);
+      Umbral_ = Umbral(toneCoeff,10);
+      Twist_ = Twist (toneCoeff); // El tono de mayor magnitud es por lo general el de frecuencias bajas.
+      Offset_ = Offset (GCoeffArray,index,0.7,0.7);
+      EnergiaTotal_ = EnergiaTotal (GCoeffArray,8000,8000,0.125);
 
       //cout<<"\r"<<Umbral_<<" "<<Twist_<<" "<<Offset_<<" "<<index[0] <<" "<<index[1]<<" "<< GCoeffArray[0] <<" "<< GCoeffArray[1] <<" "<< GCoeffArray[2] <<" "<< GCoeffArray[3] <<" "<< GCoeffArray[4] <<" "<< GCoeffArray[5] <<" "<< GCoeffArray[6] <<" "<< GCoeffArray[7] <<" "<<flush;
-     if (Umbral(toneCoeff,20) && Offset (GCoeffArray,index,0.7,0.7)) cout<<"\r"<<Decoder(index)<<"	"<<toneCoeff[0]<<" "<<toneCoeff[1]<<flush;
-      
-//Umbral(toneCoeff,10) && Twist (index) && Offset (toneCoeff,index,0.1,0.1) && EnergiaTotal (GCoeffArray,400,400,0.125)
-      //cout<<"\r"<<toneCoeff[0]<<" "<<toneCoeff[1]<<flush;
+     //if (Umbral(toneCoeff,20) && Twist_ && Offset (GCoeffArray,index,0.7,0.7)) cout<<"\r"<<Decoder(index)<<"	"<<toneCoeff[0]<<" "<<toneCoeff[1]<<flush;
+     
+     if (Umbral(toneCoeff,20) && Twist_ && Offset (GCoeffArray,index,0.7,0.7)) {
+     	for (i = 0; i < 2; i++ )
+      	{
+        	  GCoeff2Har[i] = segundaArmonica (in,ToneFreq2Har [index[i]],44100);
+      	}
+        ValidTone_ = Armonicas (toneCoeff, GCoeff2Har);
+     }
+     
+     if (ValidTone_)  cout<<"\r"<<Decoder(index)<<"	"<<toneCoeff[0]<<" "<<toneCoeff[1]<<flush;
 
       // Aqui se termina el analisis de audio de entrada
 

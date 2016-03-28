@@ -159,10 +159,8 @@ bool EnergiaTotal (float* in, float cb, float ca, float cs){
 */
 
 bool Armonicas (float* Goertzel, float* segundaArmonica){
-    float temp = 0.0;
-    for (int i = 0; i < 8; i++){
-        temp = Goertzel[i] - segundaArmonica[i];
-        if (temp < Goertzel[i]/2 || temp < 0) return false;
+    for (int i = 0; i < 2; i++){
+        if (segundaArmonica[i] > 0.5*(Goertzel[i]+1)) return false;
     }
     return true;
 }
